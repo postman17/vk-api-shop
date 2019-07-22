@@ -1,3 +1,4 @@
+from unittest.mock import patch, Mock
 from django.test import TestCase
 
 from vk_api_shop.models import ParamsModel
@@ -45,3 +46,14 @@ class ParamsModelTest(TestCase):
                            }
             }
         )
+
+    @patch('vk_api_shop.post.PostIn')
+    def test_upload_file(self, MockPost):
+        post = MockPost()
+        post.upload_file.return_value = {
+            'response': 'True'
+        }
+        response = post.upload_file('http://ya.ru', 'empty_file')
+        self.assertEquals(response, {
+            'response': 'True'
+        })
